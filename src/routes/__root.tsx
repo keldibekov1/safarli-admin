@@ -47,8 +47,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "TravelPro Super Admin" },
-      { name: "description", content: "TravelPro — premium super admin dashboard for travel agencies." },
+      { title: "Safarli Super Admin" },
+      { name: "description", content: "Safarli — premium super admin dashboard for travel agencies." },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

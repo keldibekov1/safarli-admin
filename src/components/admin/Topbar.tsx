@@ -1,4 +1,4 @@
-import { Bell, Menu, Moon, Search, Sun, Command } from "lucide-react";
+import { Bell, Menu, Moon,  Sun } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
@@ -8,7 +8,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export function Topbar({
   onMenuClick,
-  onCommand,
 }: {
   onMenuClick: () => void;
   onCommand: () => void;
@@ -24,17 +23,7 @@ export function Topbar({
         <Menu className="h-5 w-5" />
       </button>
 
-      {/* Search */}
-      <button
-        onClick={onCommand}
-        className="group flex h-10 flex-1 max-w-md items-center gap-3 rounded-xl border border-border bg-muted/40 px-4 text-sm text-muted-foreground transition hover:bg-muted hover:shadow-soft"
-      >
-        <Search className="h-4 w-4" />
-        <span className="flex-1 text-left">Qidirish: agency, tour, booking...</span>
-        <kbd className="hidden items-center gap-1 rounded-md border border-border bg-background px-1.5 py-0.5 text-[10px] font-medium sm:flex">
-          <Command className="h-3 w-3" /> K
-        </kbd>
-      </button>
+     
 
       <div className="ml-auto flex items-center gap-2">
         <button
