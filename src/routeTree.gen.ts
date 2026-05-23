@@ -15,7 +15,12 @@ import { Route as AdminUsersRouteImport } from './routes/_admin/users'
 import { Route as AdminToursRouteImport } from './routes/_admin/tours'
 import { Route as AdminSupportRouteImport } from './routes/_admin/support'
 import { Route as AdminSettingsRouteImport } from './routes/_admin/settings'
+import { Route as AdminCountriesRouteImport } from './routes/_admin/countries'
+import { Route as AdminCitiesRouteImport } from './routes/_admin/cities'
 import { Route as AdminAgenciesRouteImport } from './routes/_admin/agencies'
+import { Route as AdminCountriesCountriesRouteImport } from './routes/_admin/countries/countries'
+import { Route as AdminCityPageRouteImport } from './routes/_admin/city/page'
+import { Route as AdminCityComponentsCityDeleteDialogRouteImport } from './routes/_admin/city/components/CityDeleteDialog'
 
 const AdminRoute = AdminRouteImport.update({
   id: '/_admin',
@@ -46,52 +51,120 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCountriesRoute = AdminCountriesRouteImport.update({
+  id: '/countries',
+  path: '/countries',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCitiesRoute = AdminCitiesRouteImport.update({
+  id: '/cities',
+  path: '/cities',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAgenciesRoute = AdminAgenciesRouteImport.update({
   id: '/agencies',
   path: '/agencies',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCountriesCountriesRoute = AdminCountriesCountriesRouteImport.update({
+  id: '/countries',
+  path: '/countries',
+  getParentRoute: () => AdminCountriesRoute,
+} as any)
+const AdminCityPageRoute = AdminCityPageRouteImport.update({
+  id: '/city/page',
+  path: '/city/page',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCityComponentsCityDeleteDialogRoute =
+  AdminCityComponentsCityDeleteDialogRouteImport.update({
+    id: '/city/components/CityDeleteDialog',
+    path: '/city/components/CityDeleteDialog',
+    getParentRoute: () => AdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AdminIndexRoute
   '/agencies': typeof AdminAgenciesRoute
+  '/cities': typeof AdminCitiesRoute
+  '/countries': typeof AdminCountriesRouteWithChildren
   '/settings': typeof AdminSettingsRoute
   '/support': typeof AdminSupportRoute
   '/tours': typeof AdminToursRoute
   '/users': typeof AdminUsersRoute
+  '/city/page': typeof AdminCityPageRoute
+  '/countries/countries': typeof AdminCountriesCountriesRoute
+  '/city/components/CityDeleteDialog': typeof AdminCityComponentsCityDeleteDialogRoute
 }
 export interface FileRoutesByTo {
   '/agencies': typeof AdminAgenciesRoute
+  '/cities': typeof AdminCitiesRoute
+  '/countries': typeof AdminCountriesRouteWithChildren
   '/settings': typeof AdminSettingsRoute
   '/support': typeof AdminSupportRoute
   '/tours': typeof AdminToursRoute
   '/users': typeof AdminUsersRoute
   '/': typeof AdminIndexRoute
+  '/city/page': typeof AdminCityPageRoute
+  '/countries/countries': typeof AdminCountriesCountriesRoute
+  '/city/components/CityDeleteDialog': typeof AdminCityComponentsCityDeleteDialogRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_admin': typeof AdminRouteWithChildren
   '/_admin/agencies': typeof AdminAgenciesRoute
+  '/_admin/cities': typeof AdminCitiesRoute
+  '/_admin/countries': typeof AdminCountriesRouteWithChildren
   '/_admin/settings': typeof AdminSettingsRoute
   '/_admin/support': typeof AdminSupportRoute
   '/_admin/tours': typeof AdminToursRoute
   '/_admin/users': typeof AdminUsersRoute
   '/_admin/': typeof AdminIndexRoute
+  '/_admin/city/page': typeof AdminCityPageRoute
+  '/_admin/countries/countries': typeof AdminCountriesCountriesRoute
+  '/_admin/city/components/CityDeleteDialog': typeof AdminCityComponentsCityDeleteDialogRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/agencies' | '/settings' | '/support' | '/tours' | '/users'
+  fullPaths:
+    | '/'
+    | '/agencies'
+    | '/cities'
+    | '/countries'
+    | '/settings'
+    | '/support'
+    | '/tours'
+    | '/users'
+    | '/city/page'
+    | '/countries/countries'
+    | '/city/components/CityDeleteDialog'
   fileRoutesByTo: FileRoutesByTo
-  to: '/agencies' | '/settings' | '/support' | '/tours' | '/users' | '/'
+  to:
+    | '/agencies'
+    | '/cities'
+    | '/countries'
+    | '/settings'
+    | '/support'
+    | '/tours'
+    | '/users'
+    | '/'
+    | '/city/page'
+    | '/countries/countries'
+    | '/city/components/CityDeleteDialog'
   id:
     | '__root__'
     | '/_admin'
     | '/_admin/agencies'
+    | '/_admin/cities'
+    | '/_admin/countries'
     | '/_admin/settings'
     | '/_admin/support'
     | '/_admin/tours'
     | '/_admin/users'
     | '/_admin/'
+    | '/_admin/city/page'
+    | '/_admin/countries/countries'
+    | '/_admin/city/components/CityDeleteDialog'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -142,6 +215,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/countries': {
+      id: '/_admin/countries'
+      path: '/countries'
+      fullPath: '/countries'
+      preLoaderRoute: typeof AdminCountriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/cities': {
+      id: '/_admin/cities'
+      path: '/cities'
+      fullPath: '/cities'
+      preLoaderRoute: typeof AdminCitiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/agencies': {
       id: '/_admin/agencies'
       path: '/agencies'
@@ -149,25 +236,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAgenciesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/countries/countries': {
+      id: '/_admin/countries/countries'
+      path: '/countries'
+      fullPath: '/countries/countries'
+      preLoaderRoute: typeof AdminCountriesCountriesRouteImport
+      parentRoute: typeof AdminCountriesRoute
+    }
+    '/_admin/city/page': {
+      id: '/_admin/city/page'
+      path: '/city/page'
+      fullPath: '/city/page'
+      preLoaderRoute: typeof AdminCityPageRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/city/components/CityDeleteDialog': {
+      id: '/_admin/city/components/CityDeleteDialog'
+      path: '/city/components/CityDeleteDialog'
+      fullPath: '/city/components/CityDeleteDialog'
+      preLoaderRoute: typeof AdminCityComponentsCityDeleteDialogRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminCountriesRouteChildren {
+  AdminCountriesCountriesRoute: typeof AdminCountriesCountriesRoute
+}
+
+const AdminCountriesRouteChildren: AdminCountriesRouteChildren = {
+  AdminCountriesCountriesRoute: AdminCountriesCountriesRoute,
+}
+
+const AdminCountriesRouteWithChildren = AdminCountriesRoute._addFileChildren(
+  AdminCountriesRouteChildren,
+)
+
 interface AdminRouteChildren {
   AdminAgenciesRoute: typeof AdminAgenciesRoute
+  AdminCitiesRoute: typeof AdminCitiesRoute
+  AdminCountriesRoute: typeof AdminCountriesRouteWithChildren
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSupportRoute: typeof AdminSupportRoute
   AdminToursRoute: typeof AdminToursRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminCityPageRoute: typeof AdminCityPageRoute
+  AdminCityComponentsCityDeleteDialogRoute: typeof AdminCityComponentsCityDeleteDialogRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAgenciesRoute: AdminAgenciesRoute,
+  AdminCitiesRoute: AdminCitiesRoute,
+  AdminCountriesRoute: AdminCountriesRouteWithChildren,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminSupportRoute: AdminSupportRoute,
   AdminToursRoute: AdminToursRoute,
   AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminCityPageRoute: AdminCityPageRoute,
+  AdminCityComponentsCityDeleteDialogRoute:
+    AdminCityComponentsCityDeleteDialogRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

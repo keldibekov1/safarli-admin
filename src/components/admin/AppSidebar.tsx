@@ -11,15 +11,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAgenciesQuery } from "@/services/agencies";
 
-const nav = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard, badge: null },
-  { to: "/agencies", label: "Agencies", icon: Building2, badge: "24" },
-  { to: "/tours", label: "Tours", icon: Compass, badge: null },
-  { to: "/users", label: "Users", icon: Users, badge: null },
-  { to: "/support", label: "Support Chats", icon: MessageSquare, badge: "3" },
-  { to: "/settings", label: "Settings", icon: Settings, badge: null },
-] as const;
 
 export function AppSidebar({
   collapsed,
@@ -33,6 +26,19 @@ export function AppSidebar({
   setMobileOpen: (v: boolean) => void;
 }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  const {data: agencies} = useAgenciesQuery();
+
+  const nav = [
+  { to: "/", label: "Dashboard", icon: LayoutDashboard, badge: null },
+  { to: "/agencies", label: "Agencies", icon: Building2, badge: agencies?.total},
+  { to: "/tours", label: "Tours", icon: Compass, badge: null },
+  { to: "/users", label: "Users", icon: Users, badge: null },
+  { to: "/countries", label: "Countries", icon: Building2, badge: null },
+  { to: "/cities", label: "Cities", icon: Building2, badge: null },
+  { to: "/support", label: "Support Chats", icon: MessageSquare, badge: "3" },
+  { to: "/settings", label: "Settings", icon: Settings, badge: null },
+] as const;
 
   return (
     <>
