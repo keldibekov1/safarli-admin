@@ -33,6 +33,7 @@ export function AppSidebar({
   { to: "/", label: "Dashboard", icon: LayoutDashboard, badge: null },
   { to: "/agencies", label: "Agencies", icon: Building2, badge: agencies?.total},
   { to: "/tours", label: "Tours", icon: Compass, badge: null },
+  { to: "/tour-features", label: "Tour Features", icon: Sparkles, badge: null },
   { to: "/users", label: "Users", icon: Users, badge: null },
   { to: "/countries", label: "Countries", icon: Building2, badge: null },
   { to: "/cities", label: "Cities", icon: Building2, badge: null },

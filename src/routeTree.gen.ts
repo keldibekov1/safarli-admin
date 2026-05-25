@@ -13,11 +13,13 @@ import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as AdminIndexRouteImport } from './routes/_admin/index'
 import { Route as AdminUsersRouteImport } from './routes/_admin/users'
 import { Route as AdminToursRouteImport } from './routes/_admin/tours'
+import { Route as AdminTourFeaturesRouteImport } from './routes/_admin/tour-features'
 import { Route as AdminSupportRouteImport } from './routes/_admin/support'
 import { Route as AdminSettingsRouteImport } from './routes/_admin/settings'
 import { Route as AdminCountriesRouteImport } from './routes/_admin/countries'
 import { Route as AdminCitiesRouteImport } from './routes/_admin/cities'
 import { Route as AdminAgenciesRouteImport } from './routes/_admin/agencies'
+import { Route as AdminTourfeaturePageRouteImport } from './routes/_admin/tourfeature/page'
 import { Route as AdminCountriesCountriesRouteImport } from './routes/_admin/countries/countries'
 import { Route as AdminCityPageRouteImport } from './routes/_admin/city/page'
 import { Route as AdminCityComponentsCityDeleteDialogRouteImport } from './routes/_admin/city/components/CityDeleteDialog'
@@ -39,6 +41,11 @@ const AdminUsersRoute = AdminUsersRouteImport.update({
 const AdminToursRoute = AdminToursRouteImport.update({
   id: '/tours',
   path: '/tours',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminTourFeaturesRoute = AdminTourFeaturesRouteImport.update({
+  id: '/tour-features',
+  path: '/tour-features',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminSupportRoute = AdminSupportRouteImport.update({
@@ -66,6 +73,11 @@ const AdminAgenciesRoute = AdminAgenciesRouteImport.update({
   path: '/agencies',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminTourfeaturePageRoute = AdminTourfeaturePageRouteImport.update({
+  id: '/tourfeature/page',
+  path: '/tourfeature/page',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminCountriesCountriesRoute = AdminCountriesCountriesRouteImport.update({
   id: '/countries',
   path: '/countries',
@@ -90,10 +102,12 @@ export interface FileRoutesByFullPath {
   '/countries': typeof AdminCountriesRouteWithChildren
   '/settings': typeof AdminSettingsRoute
   '/support': typeof AdminSupportRoute
+  '/tour-features': typeof AdminTourFeaturesRoute
   '/tours': typeof AdminToursRoute
   '/users': typeof AdminUsersRoute
   '/city/page': typeof AdminCityPageRoute
   '/countries/countries': typeof AdminCountriesCountriesRoute
+  '/tourfeature/page': typeof AdminTourfeaturePageRoute
   '/city/components/CityDeleteDialog': typeof AdminCityComponentsCityDeleteDialogRoute
 }
 export interface FileRoutesByTo {
@@ -102,11 +116,13 @@ export interface FileRoutesByTo {
   '/countries': typeof AdminCountriesRouteWithChildren
   '/settings': typeof AdminSettingsRoute
   '/support': typeof AdminSupportRoute
+  '/tour-features': typeof AdminTourFeaturesRoute
   '/tours': typeof AdminToursRoute
   '/users': typeof AdminUsersRoute
   '/': typeof AdminIndexRoute
   '/city/page': typeof AdminCityPageRoute
   '/countries/countries': typeof AdminCountriesCountriesRoute
+  '/tourfeature/page': typeof AdminTourfeaturePageRoute
   '/city/components/CityDeleteDialog': typeof AdminCityComponentsCityDeleteDialogRoute
 }
 export interface FileRoutesById {
@@ -117,11 +133,13 @@ export interface FileRoutesById {
   '/_admin/countries': typeof AdminCountriesRouteWithChildren
   '/_admin/settings': typeof AdminSettingsRoute
   '/_admin/support': typeof AdminSupportRoute
+  '/_admin/tour-features': typeof AdminTourFeaturesRoute
   '/_admin/tours': typeof AdminToursRoute
   '/_admin/users': typeof AdminUsersRoute
   '/_admin/': typeof AdminIndexRoute
   '/_admin/city/page': typeof AdminCityPageRoute
   '/_admin/countries/countries': typeof AdminCountriesCountriesRoute
+  '/_admin/tourfeature/page': typeof AdminTourfeaturePageRoute
   '/_admin/city/components/CityDeleteDialog': typeof AdminCityComponentsCityDeleteDialogRoute
 }
 export interface FileRouteTypes {
@@ -133,10 +151,12 @@ export interface FileRouteTypes {
     | '/countries'
     | '/settings'
     | '/support'
+    | '/tour-features'
     | '/tours'
     | '/users'
     | '/city/page'
     | '/countries/countries'
+    | '/tourfeature/page'
     | '/city/components/CityDeleteDialog'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -145,11 +165,13 @@ export interface FileRouteTypes {
     | '/countries'
     | '/settings'
     | '/support'
+    | '/tour-features'
     | '/tours'
     | '/users'
     | '/'
     | '/city/page'
     | '/countries/countries'
+    | '/tourfeature/page'
     | '/city/components/CityDeleteDialog'
   id:
     | '__root__'
@@ -159,11 +181,13 @@ export interface FileRouteTypes {
     | '/_admin/countries'
     | '/_admin/settings'
     | '/_admin/support'
+    | '/_admin/tour-features'
     | '/_admin/tours'
     | '/_admin/users'
     | '/_admin/'
     | '/_admin/city/page'
     | '/_admin/countries/countries'
+    | '/_admin/tourfeature/page'
     | '/_admin/city/components/CityDeleteDialog'
   fileRoutesById: FileRoutesById
 }
@@ -201,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminToursRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/tour-features': {
+      id: '/_admin/tour-features'
+      path: '/tour-features'
+      fullPath: '/tour-features'
+      preLoaderRoute: typeof AdminTourFeaturesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/support': {
       id: '/_admin/support'
       path: '/support'
@@ -234,6 +265,13 @@ declare module '@tanstack/react-router' {
       path: '/agencies'
       fullPath: '/agencies'
       preLoaderRoute: typeof AdminAgenciesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/tourfeature/page': {
+      id: '/_admin/tourfeature/page'
+      path: '/tourfeature/page'
+      fullPath: '/tourfeature/page'
+      preLoaderRoute: typeof AdminTourfeaturePageRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/countries/countries': {
@@ -278,10 +316,12 @@ interface AdminRouteChildren {
   AdminCountriesRoute: typeof AdminCountriesRouteWithChildren
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSupportRoute: typeof AdminSupportRoute
+  AdminTourFeaturesRoute: typeof AdminTourFeaturesRoute
   AdminToursRoute: typeof AdminToursRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminCityPageRoute: typeof AdminCityPageRoute
+  AdminTourfeaturePageRoute: typeof AdminTourfeaturePageRoute
   AdminCityComponentsCityDeleteDialogRoute: typeof AdminCityComponentsCityDeleteDialogRoute
 }
 
@@ -291,10 +331,12 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminCountriesRoute: AdminCountriesRouteWithChildren,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminSupportRoute: AdminSupportRoute,
+  AdminTourFeaturesRoute: AdminTourFeaturesRoute,
   AdminToursRoute: AdminToursRoute,
   AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminCityPageRoute: AdminCityPageRoute,
+  AdminTourfeaturePageRoute: AdminTourfeaturePageRoute,
   AdminCityComponentsCityDeleteDialogRoute:
     AdminCityComponentsCityDeleteDialogRoute,
 }
