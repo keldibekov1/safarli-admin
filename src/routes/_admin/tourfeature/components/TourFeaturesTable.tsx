@@ -19,6 +19,7 @@ type Props = {
   features: TourFeature[];
   isLoading: boolean;
   isError: boolean;
+  onEdit: (f: TourFeature) => void;
   onDelete: (f: TourFeature) => void;
 };
 
@@ -26,6 +27,7 @@ export default function TourFeaturesTable({
   features,
   isLoading,
   isError,
+  onEdit,
   onDelete,
 }: Props) {
   return (
@@ -64,7 +66,7 @@ export default function TourFeaturesTable({
                 <TableCell className="font-semibold">{f.name}</TableCell>
                 <TableCell>
                   <div className="flex justify-end gap-2">
-                    <Button size="icon" variant="ghost">
+                    <Button size="icon" variant="ghost" onClick={() => onEdit(f)}>
                       <Pencil className="h-4 w-4" />
                     </Button>
 

@@ -10,10 +10,11 @@ import {
   CartesianGrid, BarChart, Bar, PieChart, Pie, Cell, LineChart, Line,
 } from "recharts";
 import {
-  revenueData, newAgenciesData, destinationData,
+  newAgenciesData,
   recentActivities, recentPayments, topAgencies, formatUZS,
 } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
+import { useMonthlyUserStatsQuery } from "@/services/users";
 
 export const Route = createFileRoute("/_admin/")({
   component: DashboardPage,
@@ -37,6 +38,10 @@ const toneMap = {
 const PIE_COLORS = ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))"];
 
 function DashboardPage() {
+  const currentYear = new Date().getFullYear();
+  const monthlyStatsQuery = useMonthlyUserStatsQuery(currentYear);
+  const newUsersData = monthlyStatsQuery.data?.data ?? [];
+
   return (
     <div className="space-y-6">
    
@@ -99,13 +104,18 @@ function DashboardPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-          <h3 className="text-lg font-semibold">New users</h3>
-          <p className="text-xs text-muted-foreground">Weekly growth</p>
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold">New users</h3>
+            <span className="text-xs font-medium text-muted-foreground">
+              {currentYear} · {monthlyStatsQuery.data?.total ?? 0} ta
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground">Oylik o'sish</p>
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={revenueData}>
+            <LineChart data={newUsersData}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-              <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={11} />
-              <YAxis stroke="hsl(var(--muted-foreground))" fontSize={11} />
+              <XAxis dataKey="label" stroke="hsl(var(--muted-foreground))" fontSize={11} />
+              <YAxis allowDecimals={false} stroke="hsl(var(--muted-foreground))" fontSize={11} />
               <Tooltip
                 contentStyle={{
                   background: "hsl(var(--popover))",
@@ -114,7 +124,7 @@ function DashboardPage() {
                   fontSize: 12,
                 }}
               />
-              <Line type="monotone" dataKey="bookings" stroke="hsl(var(--accent))" strokeWidth={3} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="count" name="Yangi userlar" stroke="hsl(var(--accent))" strokeWidth={3} dot={{ r: 4 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>

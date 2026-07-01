@@ -17,6 +17,7 @@ type Props = {
   setName: (v: string) => void;
   onCreate: () => void;
   loading: boolean;
+  title?: string;
 };
 
 export default function CreateTourFeatureDialog({
@@ -26,12 +27,13 @@ export default function CreateTourFeatureDialog({
   setName,
   onCreate,
   loading,
+  title = "Create Tour Feature",
 }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Tour Feature</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-2">
@@ -44,7 +46,7 @@ export default function CreateTourFeatureDialog({
             Cancel
           </Button>
 
-          <Button onClick={onCreate} disabled={loading}>
+          <Button onClick={onCreate} disabled={loading || !name.trim()}>
             Save
           </Button>
         </DialogFooter>

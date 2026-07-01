@@ -8,6 +8,7 @@ type Props = {
   cities: City[];
   isLoading: boolean;
   isError: boolean;
+  onEdit: (city: City) => void;
   onDelete: (city: City) => void;
 };
 
@@ -15,6 +16,7 @@ export default function CityTable({
   cities,
   isLoading,
   isError,
+  onEdit,
   onDelete,
 }: Props) {
   return (
@@ -24,6 +26,14 @@ export default function CityTable({
           <tr>
             <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Shahar
+            </th>
+
+            <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Nomi (UZ)
+            </th>
+
+            <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Nomi (RU)
             </th>
 
             <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -41,7 +51,7 @@ export default function CityTable({
 
           {isError && (
             <tr>
-              <td colSpan={3} className="px-5 py-12 text-center text-sm text-destructive">
+              <td colSpan={5} className="px-5 py-12 text-center text-sm text-destructive">
                 Shaharlarni yuklashda xatolik yuz berdi.
               </td>
             </tr>
@@ -54,6 +64,7 @@ export default function CityTable({
                 key={city.id}
                 city={city}
                 index={index}
+                onEdit={onEdit}
                 onDelete={onDelete}
               />
             ))}

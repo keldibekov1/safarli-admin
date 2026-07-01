@@ -1,7 +1,9 @@
 import { useMemo } from "react";
-import { ArrowUpDown, MapPin, MoreVertical, Pause, Pencil, Star, Trash2 } from "lucide-react";
+import { ArrowUpDown, Eye, MapPin, MoreVertical, Pause, Pencil, Play, Star, Trash2 } from "lucide-react";
 import { type ColumnDef } from "@tanstack/react-table";
+import { Link } from "@tanstack/react-router";
 import { type Agency } from "@/api/agencies";
+import { assetUrl } from "@/api/api";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -16,7 +18,17 @@ const statusStyles = {
   inactive: "bg-destructive/15 text-destructive border-destructive/30",
 };
 
-export function useAgencyColumns() {
+type UseAgencyColumnsOptions = {
+  onEdit: (agency: Agency) => void;
+  onToggleStatus: (agency: Agency) => void;
+  onDelete: (agency: Agency) => void;
+};
+
+export function useAgencyColumns({
+  onEdit,
+  onToggleStatus,
+  onDelete,
+}: UseAgencyColumnsOptions) {
   return useMemo<ColumnDef<Agency>[]>(
     () => [
       {
@@ -33,7 +45,7 @@ export function useAgencyColumns() {
           <div className="flex items-center gap-3">
             {row.original.logo ? (
               <img
-                src={row.original.logo}
+                src={assetUrl(row.original.logo)}
                 alt={`${row.original.name} logo`}
                 className="h-10 w-10 rounded-xl border border-border object-cover shadow-soft"
               />
@@ -44,7 +56,13 @@ export function useAgencyColumns() {
             )}
             <div>
               <div className="flex items-center gap-1.5">
-                <p className="font-semibold">{row.original.name}</p>
+                <Link
+                  to="/agencies/$id"
+                  params={{ id: row.original.id }}
+                  className="font-semibold hover:text-primary hover:underline"
+                >
+                  {row.original.name}
+                </Link>
               </div>
               <p className="text-xs text-muted-foreground flex items-center gap-1">
                 <MapPin className="h-3 w-3" /> {row.original.region?.name ?? row.original.address}
@@ -85,7 +103,7 @@ export function useAgencyColumns() {
       {
         id: "actions",
         header: "",
-        cell: () => (
+        cell: ({ row }) => (
           <div className="flex justify-end">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -94,14 +112,30 @@ export function useAgencyColumns() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="rounded-xl">
-                <DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/agencies/$id" params={{ id: row.original.id }}>
+                    <Eye className="mr-2 h-4 w-4" /> Ko'rish
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onEdit(row.original)}>
                   <Pencil className="mr-2 h-4 w-4" /> Tahrirlash
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Pause className="mr-2 h-4 w-4" /> To'xtatish
+                <DropdownMenuItem onClick={() => onToggleStatus(row.original)}>
+                  {row.original.isActive ? (
+                    <>
+                      <Pause className="mr-2 h-4 w-4" /> To'xtatish
+                    </>
+                  ) : (
+                    <>
+                      <Play className="mr-2 h-4 w-4" /> Faollashtirish
+                    </>
+                  )}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive">
+                <DropdownMenuItem
+                  className="text-destructive"
+                  onClick={() => onDelete(row.original)}
+                >
                   <Trash2 className="mr-2 h-4 w-4" /> O'chirish
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -110,6 +144,6 @@ export function useAgencyColumns() {
         ),
       },
     ],
-    [],
+    [onEdit, onToggleStatus, onDelete],
   );
 }

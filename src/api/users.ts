@@ -34,3 +34,23 @@ export async function getUsers({ page = 1, limit = 10 }: GetUsersParams = {}) {
 export async function deleteUser(id: string) {
   await api.delete(`/users/${id}`);
 }
+
+export type MonthlyUserStat = {
+  month: number;
+  label: string;
+  count: number;
+};
+
+export type MonthlyUserStats = {
+  year: number;
+  total: number;
+  data: MonthlyUserStat[];
+};
+
+export async function getMonthlyUserStats(year: number) {
+  const response = await api.get<MonthlyUserStats>("/users/stats/monthly", {
+    params: { year },
+  });
+
+  return response.data;
+}

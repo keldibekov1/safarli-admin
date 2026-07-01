@@ -15,3 +15,19 @@ export function formatDateTime(value: string | number | Date) {
 
   return dateTimeFormatter.format(date);
 }
+
+const dateFormatter = new Intl.DateTimeFormat("uz-UZ", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
+
+export function formatDate(value: string | number | Date) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "-";
+  }
+
+  return dateFormatter.format(date);
+}

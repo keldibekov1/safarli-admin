@@ -5,7 +5,15 @@ import {
   type UseMutationOptions,
 } from "@tanstack/react-query";
 
-import { deleteCity, getCities } from "@/api/city";
+import {
+  createCity,
+  deleteCity,
+  getCities,
+  updateCity,
+  type City,
+  type CreateCityDto,
+  type UpdateCityDto,
+} from "@/api/city";
 
 type CitiesQueryParams = {
   page?: number;
@@ -55,6 +63,73 @@ export function useCitiesQuery({
         search,
         countryId,
       }),
+  });
+}
+
+export function useAllCitiesQuery(countryId = "") {
+  return useQuery({
+    queryKey: [...citiesQueryKeys.all, "all", { countryId }],
+    queryFn: () =>
+      getCities({ page: 1, limit: 1000, countryId }),
+    staleTime: 60_000,
+    select: (res) => res.data,
+  });
+}
+
+export function useCreateCityMutation(
+  options?: UseMutationOptions<City, Error, CreateCityDto>,
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createCity,
+
+    onSuccess: async (...args) => {
+      await queryClient.invalidateQueries({
+        queryKey: citiesQueryKeys.all,
+      });
+
+      await options?.onSuccess?.(...args);
+    },
+
+    onError: (...args) => {
+      options?.onError?.(...args);
+    },
+
+    onSettled: (...args) => {
+      options?.onSettled?.(...args);
+    },
+  });
+}
+
+export function useUpdateCityMutation(
+  options?: UseMutationOptions<
+    City,
+    Error,
+    { id: string; data: UpdateCityDto }
+  >,
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateCityDto }) =>
+      updateCity(id, data),
+
+    onSuccess: async (...args) => {
+      await queryClient.invalidateQueries({
+        queryKey: citiesQueryKeys.all,
+      });
+
+      await options?.onSuccess?.(...args);
+    },
+
+    onError: (...args) => {
+      options?.onError?.(...args);
+    },
+
+    onSettled: (...args) => {
+      options?.onSettled?.(...args);
+    },
   });
 }
 

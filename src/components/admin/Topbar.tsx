@@ -1,10 +1,12 @@
-import { Bell, Menu, Moon,  Sun } from "lucide-react";
+import { Bell, LogOut, Menu, Moon,  Sun } from "lucide-react";
+import { Link, useRouter } from "@tanstack/react-router";
 import { useTheme } from "@/lib/theme";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { clearSession, getAdmin } from "@/api/auth";
 
 export function Topbar({
   onMenuClick,
@@ -13,6 +15,13 @@ export function Topbar({
   onCommand: () => void;
 }) {
   const { theme, toggle } = useTheme();
+  const router = useRouter();
+  const admin = getAdmin();
+
+  const handleLogout = () => {
+    clearSession();
+    router.navigate({ to: "/login" });
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-xl lg:px-6">
@@ -62,22 +71,31 @@ export function Topbar({
           <DropdownMenuTrigger asChild>
             <button className="flex items-center gap-2 rounded-xl border border-border bg-card p-1 pr-3 hover:bg-muted">
               <Avatar className="h-8 w-8">
-                <AvatarFallback className="gradient-primary text-xs font-semibold text-white">SA</AvatarFallback>
+                <AvatarFallback className="gradient-primary text-xs font-semibold text-white uppercase">
+                  {admin?.username?.slice(0, 2) ?? "SA"}
+                </AvatarFallback>
               </Avatar>
               <div className="hidden text-left md:block">
-                <p className="text-xs font-semibold leading-tight">Super Admin</p>
-                <p className="text-[10px] text-muted-foreground">admin@safarli.uz</p>
+                <p className="text-xs font-semibold leading-tight">{admin?.username ?? "Super Admin"}</p>
+                <p className="text-[10px] text-muted-foreground">Administrator</p>
               </div>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 rounded-2xl">
             <DropdownMenuLabel>Mening hisobim</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profil</DropdownMenuItem>
-            <DropdownMenuItem>Sozlamalar</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/profile">Profil</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/settings">Sozlamalar</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem>Audit logs</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">Chiqish</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+              <LogOut className="mr-2 h-4 w-4" />
+              Chiqish
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

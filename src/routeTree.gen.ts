@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as AdminIndexRouteImport } from './routes/_admin/index'
 import { Route as AdminUsersRouteImport } from './routes/_admin/users'
@@ -16,14 +17,21 @@ import { Route as AdminToursRouteImport } from './routes/_admin/tours'
 import { Route as AdminTourFeaturesRouteImport } from './routes/_admin/tour-features'
 import { Route as AdminSupportRouteImport } from './routes/_admin/support'
 import { Route as AdminSettingsRouteImport } from './routes/_admin/settings'
+import { Route as AdminProfileRouteImport } from './routes/_admin/profile'
 import { Route as AdminCountriesRouteImport } from './routes/_admin/countries'
 import { Route as AdminCitiesRouteImport } from './routes/_admin/cities'
 import { Route as AdminAgenciesRouteImport } from './routes/_admin/agencies'
 import { Route as AdminTourfeaturePageRouteImport } from './routes/_admin/tourfeature/page'
 import { Route as AdminCountriesCountriesRouteImport } from './routes/_admin/countries/countries'
 import { Route as AdminCityPageRouteImport } from './routes/_admin/city/page'
+import { Route as AdminAgenciesIdRouteImport } from './routes/_admin/agencies_.$id'
 import { Route as AdminCityComponentsCityDeleteDialogRouteImport } from './routes/_admin/city/components/CityDeleteDialog'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/_admin',
   getParentRoute: () => rootRouteImport,
@@ -58,6 +66,11 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminProfileRoute = AdminProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminCountriesRoute = AdminCountriesRouteImport.update({
   id: '/countries',
   path: '/countries',
@@ -88,6 +101,11 @@ const AdminCityPageRoute = AdminCityPageRouteImport.update({
   path: '/city/page',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAgenciesIdRoute = AdminAgenciesIdRouteImport.update({
+  id: '/agencies_/$id',
+  path: '/agencies/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminCityComponentsCityDeleteDialogRoute =
   AdminCityComponentsCityDeleteDialogRouteImport.update({
     id: '/city/components/CityDeleteDialog',
@@ -97,29 +115,35 @@ const AdminCityComponentsCityDeleteDialogRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof AdminIndexRoute
+  '/login': typeof LoginRoute
   '/agencies': typeof AdminAgenciesRoute
   '/cities': typeof AdminCitiesRoute
   '/countries': typeof AdminCountriesRouteWithChildren
+  '/profile': typeof AdminProfileRoute
   '/settings': typeof AdminSettingsRoute
   '/support': typeof AdminSupportRoute
   '/tour-features': typeof AdminTourFeaturesRoute
   '/tours': typeof AdminToursRoute
   '/users': typeof AdminUsersRoute
+  '/agencies/$id': typeof AdminAgenciesIdRoute
   '/city/page': typeof AdminCityPageRoute
   '/countries/countries': typeof AdminCountriesCountriesRoute
   '/tourfeature/page': typeof AdminTourfeaturePageRoute
   '/city/components/CityDeleteDialog': typeof AdminCityComponentsCityDeleteDialogRoute
 }
 export interface FileRoutesByTo {
+  '/login': typeof LoginRoute
   '/agencies': typeof AdminAgenciesRoute
   '/cities': typeof AdminCitiesRoute
   '/countries': typeof AdminCountriesRouteWithChildren
+  '/profile': typeof AdminProfileRoute
   '/settings': typeof AdminSettingsRoute
   '/support': typeof AdminSupportRoute
   '/tour-features': typeof AdminTourFeaturesRoute
   '/tours': typeof AdminToursRoute
   '/users': typeof AdminUsersRoute
   '/': typeof AdminIndexRoute
+  '/agencies/$id': typeof AdminAgenciesIdRoute
   '/city/page': typeof AdminCityPageRoute
   '/countries/countries': typeof AdminCountriesCountriesRoute
   '/tourfeature/page': typeof AdminTourfeaturePageRoute
@@ -128,15 +152,18 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_admin': typeof AdminRouteWithChildren
+  '/login': typeof LoginRoute
   '/_admin/agencies': typeof AdminAgenciesRoute
   '/_admin/cities': typeof AdminCitiesRoute
   '/_admin/countries': typeof AdminCountriesRouteWithChildren
+  '/_admin/profile': typeof AdminProfileRoute
   '/_admin/settings': typeof AdminSettingsRoute
   '/_admin/support': typeof AdminSupportRoute
   '/_admin/tour-features': typeof AdminTourFeaturesRoute
   '/_admin/tours': typeof AdminToursRoute
   '/_admin/users': typeof AdminUsersRoute
   '/_admin/': typeof AdminIndexRoute
+  '/_admin/agencies_/$id': typeof AdminAgenciesIdRoute
   '/_admin/city/page': typeof AdminCityPageRoute
   '/_admin/countries/countries': typeof AdminCountriesCountriesRoute
   '/_admin/tourfeature/page': typeof AdminTourfeaturePageRoute
@@ -146,29 +173,35 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
     | '/agencies'
     | '/cities'
     | '/countries'
+    | '/profile'
     | '/settings'
     | '/support'
     | '/tour-features'
     | '/tours'
     | '/users'
+    | '/agencies/$id'
     | '/city/page'
     | '/countries/countries'
     | '/tourfeature/page'
     | '/city/components/CityDeleteDialog'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/login'
     | '/agencies'
     | '/cities'
     | '/countries'
+    | '/profile'
     | '/settings'
     | '/support'
     | '/tour-features'
     | '/tours'
     | '/users'
     | '/'
+    | '/agencies/$id'
     | '/city/page'
     | '/countries/countries'
     | '/tourfeature/page'
@@ -176,15 +209,18 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_admin'
+    | '/login'
     | '/_admin/agencies'
     | '/_admin/cities'
     | '/_admin/countries'
+    | '/_admin/profile'
     | '/_admin/settings'
     | '/_admin/support'
     | '/_admin/tour-features'
     | '/_admin/tours'
     | '/_admin/users'
     | '/_admin/'
+    | '/_admin/agencies_/$id'
     | '/_admin/city/page'
     | '/_admin/countries/countries'
     | '/_admin/tourfeature/page'
@@ -193,10 +229,18 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_admin': {
       id: '/_admin'
       path: ''
@@ -246,6 +290,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/profile': {
+      id: '/_admin/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AdminProfileRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/countries': {
       id: '/_admin/countries'
       path: '/countries'
@@ -288,6 +339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCityPageRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/agencies_/$id': {
+      id: '/_admin/agencies_/$id'
+      path: '/agencies/$id'
+      fullPath: '/agencies/$id'
+      preLoaderRoute: typeof AdminAgenciesIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/city/components/CityDeleteDialog': {
       id: '/_admin/city/components/CityDeleteDialog'
       path: '/city/components/CityDeleteDialog'
@@ -314,12 +372,14 @@ interface AdminRouteChildren {
   AdminAgenciesRoute: typeof AdminAgenciesRoute
   AdminCitiesRoute: typeof AdminCitiesRoute
   AdminCountriesRoute: typeof AdminCountriesRouteWithChildren
+  AdminProfileRoute: typeof AdminProfileRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminSupportRoute: typeof AdminSupportRoute
   AdminTourFeaturesRoute: typeof AdminTourFeaturesRoute
   AdminToursRoute: typeof AdminToursRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminAgenciesIdRoute: typeof AdminAgenciesIdRoute
   AdminCityPageRoute: typeof AdminCityPageRoute
   AdminTourfeaturePageRoute: typeof AdminTourfeaturePageRoute
   AdminCityComponentsCityDeleteDialogRoute: typeof AdminCityComponentsCityDeleteDialogRoute
@@ -329,12 +389,14 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAgenciesRoute: AdminAgenciesRoute,
   AdminCitiesRoute: AdminCitiesRoute,
   AdminCountriesRoute: AdminCountriesRouteWithChildren,
+  AdminProfileRoute: AdminProfileRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminSupportRoute: AdminSupportRoute,
   AdminTourFeaturesRoute: AdminTourFeaturesRoute,
   AdminToursRoute: AdminToursRoute,
   AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminAgenciesIdRoute: AdminAgenciesIdRoute,
   AdminCityPageRoute: AdminCityPageRoute,
   AdminTourfeaturePageRoute: AdminTourfeaturePageRoute,
   AdminCityComponentsCityDeleteDialogRoute:
@@ -345,6 +407,7 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

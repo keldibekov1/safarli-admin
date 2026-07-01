@@ -1,11 +1,17 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AppSidebar } from "@/components/admin/AppSidebar";
 import { Topbar } from "@/components/admin/Topbar";
 import { CommandPalette } from "@/components/admin/CommandPalette";
+import { isAuthenticated } from "@/api/auth";
 
 export const Route = createFileRoute("/_admin")({
+  beforeLoad: () => {
+    if (typeof window !== "undefined" && !isAuthenticated()) {
+      throw redirect({ to: "/login" });
+    }
+  },
   component: AdminLayout,
 });
 

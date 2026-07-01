@@ -1,17 +1,19 @@
 import { motion } from "framer-motion";
-import { Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 
 import { type Country } from "@/api/countries";
 
 type Props = {
   country: Country;
   index: number;
+  onEdit: (country: Country) => void;
   onDelete: (country: Country) => void;
 };
 
 export default function CountriesTableRow({
   country,
   index,
+  onEdit,
   onDelete,
 }: Props) {
   return (
@@ -34,7 +36,27 @@ export default function CountriesTableRow({
       </td>
 
       <td className="px-5 py-4">
-        <div className="flex justify-end">
+        <span className={country.nameUz ? "" : "text-muted-foreground"}>
+          {country.nameUz ?? "—"}
+        </span>
+      </td>
+
+      <td className="px-5 py-4">
+        <span className={country.nameRu ? "" : "text-muted-foreground"}>
+          {country.nameRu ?? "—"}
+        </span>
+      </td>
+
+      <td className="px-5 py-4">
+        <div className="flex justify-end gap-1">
+          <button
+            onClick={() => onEdit(country)}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+            aria-label={`${country.name}ni tahrirlash`}
+          >
+            <Pencil className="h-4 w-4" />
+          </button>
+
           <button
             onClick={() => onDelete(country)}
             className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-destructive hover:bg-destructive/10"

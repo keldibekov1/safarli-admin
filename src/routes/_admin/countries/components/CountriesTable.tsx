@@ -10,6 +10,7 @@ type Props = {
   isLoading: boolean;
   isError: boolean;
 
+  onEdit: (country: Country) => void;
   onDelete: (country: Country) => void;
 };
 
@@ -17,6 +18,7 @@ export default function CountriesTable({
   countries,
   isLoading,
   isError,
+  onEdit,
   onDelete,
 }: Props) {
   return (
@@ -26,6 +28,14 @@ export default function CountriesTable({
           <tr>
             <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Nomi
+            </th>
+
+            <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Nomi (UZ)
+            </th>
+
+            <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Nomi (RU)
             </th>
 
             <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -40,7 +50,7 @@ export default function CountriesTable({
           {isError && (
             <tr>
               <td
-                colSpan={2}
+                colSpan={4}
                 className="px-5 py-12 text-center text-sm text-destructive"
               >
                 Davlatlarni yuklashda xatolik yuz berdi.
@@ -55,6 +65,7 @@ export default function CountriesTable({
                 key={country.id}
                 country={country}
                 index={index}
+                onEdit={onEdit}
                 onDelete={onDelete}
               />
             ))}

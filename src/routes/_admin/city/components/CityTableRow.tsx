@@ -1,16 +1,18 @@
 import { motion } from "framer-motion";
-import { Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { type City } from "@/api/city";
 
 type Props = {
   city: City;
   index: number;
+  onEdit: (city: City) => void;
   onDelete: (city: City) => void;
 };
 
 export default function CityTableRow({
   city,
   index,
+  onEdit,
   onDelete,
 }: Props) {
   return (
@@ -29,15 +31,36 @@ export default function CityTableRow({
         </div>
       </td>
 
+      <td className="px-5 py-4 text-sm">
+        <span className={city.nameUz ? "" : "text-muted-foreground"}>
+          {city.nameUz ?? "—"}
+        </span>
+      </td>
+
+      <td className="px-5 py-4 text-sm">
+        <span className={city.nameRu ? "" : "text-muted-foreground"}>
+          {city.nameRu ?? "—"}
+        </span>
+      </td>
+
       <td className="px-5 py-4 text-sm text-muted-foreground">
         {city.country.name}
       </td>
 
       <td className="px-5 py-4">
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-1">
+          <button
+            onClick={() => onEdit(city)}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+            aria-label={`${city.name}ni tahrirlash`}
+          >
+            <Pencil className="h-4 w-4" />
+          </button>
+
           <button
             onClick={() => onDelete(city)}
             className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-destructive hover:bg-destructive/10"
+            aria-label={`${city.name}ni o'chirish`}
           >
             <Trash2 className="h-4 w-4" />
           </button>

@@ -28,6 +28,20 @@ export async function createTourFeature(
   return response.data;
 }
 
+export type UpdateTourFeatureDto = CreateTourFeatureDto;
+
+export async function updateTourFeature(
+  id: string,
+  data: UpdateTourFeatureDto,
+) {
+  const response = await api.patch<TourFeature>(
+    `/tour-feature/${id}`,
+    data,
+  );
+
+  return response.data;
+}
+
 export async function deleteTourFeature(id: string) {
   await api.delete(`/tour-feature/${id}`);
 }

@@ -4,7 +4,7 @@ import {
   useQueryClient,
   type UseMutationOptions,
 } from "@tanstack/react-query";
-import { deleteUser, getUsers } from "@/api/users";
+import { deleteUser, getMonthlyUserStats, getUsers } from "@/api/users";
 
 type UsersQueryParams = {
   page?: number;
@@ -21,6 +21,14 @@ export function useUsersQuery({ page = 1, limit = 10 }: UsersQueryParams = {}) {
   return useQuery({
     queryKey: usersQueryKeys.list({ page, limit }),
     queryFn: () => getUsers({ page, limit }),
+  });
+}
+
+export function useMonthlyUserStatsQuery(year: number) {
+  return useQuery({
+    queryKey: [...usersQueryKeys.all, "stats", "monthly", year],
+    queryFn: () => getMonthlyUserStats(year),
+    staleTime: 60_000,
   });
 }
 

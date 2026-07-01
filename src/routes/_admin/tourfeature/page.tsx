@@ -8,6 +8,7 @@ import {
   useCreateTourFeatureMutation,
   useDeleteTourFeatureMutation,
   useTourFeaturesQuery,
+  useUpdateTourFeatureMutation,
 } from "@/services/tour-features";
 
 import TourFeaturesHeader from "./components/TourFeaturesHeader";
@@ -23,8 +24,10 @@ export const Route = createFileRoute("/_admin/tourfeature/page")({
 export default function TourFeaturesPage() {
   const [createOpen, setCreateOpen] = useState(false);
   const [featureToDelete, setFeatureToDelete] = useState<TourFeature | null>(null);
+  const [featureToEdit, setFeatureToEdit] = useState<TourFeature | null>(null);
 
   const [name, setName] = useState("");
+  const [editName, setEditName] = useState("");
 
   const tourFeaturesQuery = useTourFeaturesQuery();
   const features = tourFeaturesQuery.data ?? [];
@@ -37,6 +40,19 @@ export default function TourFeaturesPage() {
     },
     onError: () => toast.error("Xatolik"),
   });
+
+  const updateMutation = useUpdateTourFeatureMutation({
+    onSuccess: () => {
+      toast.success("Muvaffaqiyatli yangilandi");
+      setFeatureToEdit(null);
+    },
+    onError: () => toast.error("Xatolik"),
+  });
+
+  const openEdit = (feature: TourFeature) => {
+    setFeatureToEdit(feature);
+    setEditName(feature.name);
+  };
 
   const deleteMutation = useDeleteTourFeatureMutation({
     onSuccess: () => {
@@ -55,6 +71,7 @@ export default function TourFeaturesPage() {
           features={features}
           isLoading={tourFeaturesQuery.isLoading}
           isError={tourFeaturesQuery.isError}
+          onEdit={openEdit}
           onDelete={setFeatureToDelete}
         />
       </Card>
@@ -66,6 +83,24 @@ export default function TourFeaturesPage() {
         setName={setName}
         onCreate={() => createMutation.mutate({ name })}
         loading={createMutation.isPending}
+      />
+
+      <CreateTourFeatureDialog
+        open={featureToEdit !== null}
+        setOpen={(v) => {
+          if (!v) setFeatureToEdit(null);
+        }}
+        name={editName}
+        setName={setEditName}
+        onCreate={() =>
+          featureToEdit &&
+          updateMutation.mutate({
+            id: featureToEdit.id,
+            data: { name: editName },
+          })
+        }
+        loading={updateMutation.isPending}
+        title="Edit Tour Feature"
       />
 
       <DeleteTourFeatureDialog
