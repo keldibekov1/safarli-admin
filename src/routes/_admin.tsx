@@ -7,6 +7,11 @@ import { CommandPalette } from "@/components/admin/CommandPalette";
 import { isAuthenticated } from "@/api/auth";
 
 export const Route = createFileRoute("/_admin")({
+  // Auth lives in localStorage, which the server can't read during SSR.
+  // Render the admin subtree client-side only so `beforeLoad` runs (and can
+  // redirect) before anything paints — otherwise the server ships the full
+  // dashboard HTML and it flashes before the client bounces to /login.
+  ssr: false,
   beforeLoad: () => {
     if (typeof window !== "undefined" && !isAuthenticated()) {
       throw redirect({ to: "/login" });
